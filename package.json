@@ -1,0 +1,20 @@
+{
+  "name": "rastrojs",
+  "description": "Rastro - API Rastreamento de objetos - Correios",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "author": "Tales Luna <tales.ferreira.luna@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "~2.2.0",
+    "express": "~4.13.4",
+    "http-status-codes": "^1.0.6",
+    "iconv-lite": "^0.4.13",
+    "js2xmlparser": "^2.0.2",
+    "request": "^2.75.0",
+    "striptags": "^2.1.1"
+  }
+}
