@@ -3,11 +3,11 @@ Rastro - API Rastreamento de objetos - Correios NodeJS/Express
 
 Retorna dados de rastreamento de objetos nos correios por meio do código de rastreio com saídas em JSON ou XML.
 
-##### Exemplos:
+### Exemplos:
 - http://you_host:port/xml/JGXXXXXXXXXBR
 - http://you_host:port/json/JGXXXXXXXXXBR
 
-##### Uso/Instalação:
+### Uso/Instalação:
 
 Em sua linha de comando execute:
 ```sh
@@ -16,21 +16,29 @@ $ npm install
 $ npm start
 ```
 
-##### Response Codes:
+### Response Codes:
 
 - 200 OK
+
     > Informações presentes e exibidas
+
 - 404 NOT_FOUND
+    
     > Não foram encontradas informações de rastreio
+    
 - 408 REQUEST_TIMEOUT
+    
     > Falha ao se conectar com os correios
+
 - 400 BAD_REQUEST
+
     > Tipo de retorno não implementado ou algum param faltando
 
 
-##### Retornos:
+### Retornos:
 
 - XML
+
     ``` XML
         <?xml version='1.0'?>
         <rastreio>
@@ -46,7 +54,9 @@ $ npm start
             </rastreio>
         </rastreio>
     ```
+
 - JSON
+
     ```JSON
     [ 
         {
@@ -77,6 +87,6 @@ $ npm start
     ]
     ```
 
-##### License:
+### License:
 - MIT
 
