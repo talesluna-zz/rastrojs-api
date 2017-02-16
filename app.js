@@ -1,35 +1,35 @@
-
 /*
     @name       Rastro - API Rastreamendo de objetos - Correios - NodeJS
     @author     Tales Luna <tale.ferreira.luna@gmail.com>
 
-    Meio alternativo ao WebService dos correios para consultar rastreio de objetos
-    com retorno em XML e JSON
+    Meio alternativo ao WebService dos correios
+    para consultar rastreio de objetos com retorno em XML e JSON
 
     (Esta API também está disponível em PHP no meu GitHub)
-
  */
 
 var express     = require('express');
 var configs     = require('./configs/config');
-var parser      = require('./bin/parser');
+var WebSRO      = require('./bin/parser');
 var HTTPStatus  = require('http-status-codes');
+var responses   = require("./bin/responses");
 
 var app = express();
 
-// Headers simples
+/**
+ * Configurações básicas de cabeçalhos HTTP
+ */
 app.use(function (req, res, next) {
-    res.header('x-powered-by', configs.app_name+" - "+configs.app_version);
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Origin', configs.app_origin);
-    res.header('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('x-powered-by',                       configs.app_name+" - "+configs.app_version);
+    res.setHeader('Access-Control-Allow-Credentials',   true);
+    res.setHeader('Access-Control-Allow-Origin',        configs.app_origin);
+    res.setHeader('Access-Control-Allow-Methods',       'GET');
     next();
 });
 
-
-/* Rotas */
-
-// Padrão
+/**
+ * Rota padrão, com informaçõa do app e versão
+ */
 app.get("/", function (req, res) {
     return res.status(HTTPStatus.OK).json({
         status  : true,
@@ -38,18 +38,55 @@ app.get("/", function (req, res) {
     });
 });
 
-
-// Caso o usuário tenha esquecido de informar o código
-app.get("/:type/", function (req, res) {
-    return res.status(HTTPStatus.BAD_REQUEST).json({
-        status  : true,
+/**
+ * Rota onde não existe código de rastreio, informa a pendência
+ */
+app.get('/:type/', function (req, res) {
+    var error = {
+        status  : false,
         code    : HTTPStatus.BAD_REQUEST,
-        message : 'informe um código de rastreio (EX:SS123456789BR)'
-    });
+        message : 'Informe um código de rastreio (EX:SS123456789BR)'
+    };
+    responses(req.params.type,error,error.code,res);
 });
 
+/**
+ * Rota com código de rastreio presnete nos params
+ * Realiza request e parse do response HTTP
+ */
+app.get('/:type/:code', function (req, res) {
+    WebSRO.request(req)
+        .then(function (data) {
 
-// Caso todos os dados necessários esteja presente
-app.get('/:type/:code', parser);
+            /**
+             * Caso o request tenha sido bem sucedido
+             * tenta realizar parse do HTML e por fim retornar
+             * os dados de rastreio.
+             */
+            var response = WebSRO.parser(data);
+            responses(req.params.type,response,HTTPStatus.OK,res);
+
+        }).catch(function (err) {
+
+        /**
+         * Caso algum erro tenha ocorrido
+         * o mesmo será retornado de acordo com
+         * as mensagens abaixo.
+         * @type {{}}
+         */
+        var messages = {};
+            messages[HTTPStatus.BAD_REQUEST]     ='Código de rastreio inválido.';
+            messages[HTTPStatus.REQUEST_TIMEOUT] ='Erro ao realizar conexão com o webSRO.';
+            messages[HTTPStatus.NOT_FOUND]       ='Não foram encontrados dados de rastreio para o código informado.';
+
+            var code = err.statusCode || HTTPStatus.REQUEST_TIMEOUT;
+            var error = {
+                status  : false,
+                code    : code,
+                message : messages[code]
+            };
+            responses(req.params.type,error,error.code,res);
+        });
+});
 
 module.exports = app;
