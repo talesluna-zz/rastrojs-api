@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
 /*
    @name       Rastro - API Rastreamendo de objetos - Correios - NodeJS
    @author     Tales Luna <tale.ferreira.luna@gmail.com>
@@ -17,7 +14,6 @@ var configs = require('../configs/config');
 /**
  * Get port from environment and store in Express.
  */
-
 var port = normalizePort(process.env.PORT || configs.app_port);
 app.set('port', port);
 
@@ -93,4 +89,13 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  _setupLog();
+}
+
+
+function _setupLog() {
+    console.log(configs.app_name);
+    console.log('Server started on http://'+configs.app_host+':'+configs.app_port);
+    console.log('Version: '+configs.app_version);
+    console.log('Allow to "'+configs.app_origin+'"');
 }
