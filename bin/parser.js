@@ -1,6 +1,5 @@
 var requestPromise  = require("request-promise");
-var HTTPStatus      = require('http-status-codes');
-var striptags       = require('striptags');
+var cheerio         = require("cheerio");
 
 /**
  * @type {{request: WebSRO.request, parser: WebSRO.parser}}
@@ -12,71 +11,52 @@ var WebSRO = {
      * @param req
      */
     request: function (req) {
-        var url = "http://websro.correios.com.br/sro_bin/txect01$.QueryList?P_LINGUA=001&P_COD_UNI=" + req.params.code;
-        return requestPromise(url, {encoding: 'binary'});
+        var correios = {
+            uri: "http://www2.correios.com.br/sistemas/rastreamento/multResultado.cfm",
+            form: {
+                objetos: req.params.code
+            },
+            method: 'POST',
+            headers: {}
+        };
+        return requestPromise(correios);
     },
 
     /**
-     * Realize parser da informação retornada do request
+     *  Realiza parser da informação retornada do request
      * @param data
-     * @returns {Array.<*>}
      */
     parser: function (data) {
+        var $ = cheerio.load(data);
+        var objetos = [];
+        var tableObjetos = $('table').find('tr');
+        $(tableObjetos).map(function(key, objeto){
+            objeto  = $(objeto).children('td').map(function (key, field) {
+                return $(field).text();
+            }).toArray();
+            if (objeto[0]) {
 
-        /* Apenas para controle dos encaminhamentos */
-        var encaminhados    = 0;
-        var rastreio          = [];
-        var posicao         = 0;
+                var rastreio = {
+                    codigo  : null,
+                    situacao: null,
+                    local   : null,
+                    data    : null
+                };
 
-        /* charset presente na página dos correios */
-
-
-        /* Parse da table html no site dos correios */
-        data = striptags(data, '<td>');
-        data = data.replace(/<td>/g, ',');
-        data = data.split('Situação')[1];
-
-        /* Se não existir dados de rastreio para o código inormado, pare por aqui... */
-        if (!data)
-            throw {
-                statusCode: HTTPStatus.BAD_REQUEST,
-                customMessage: 'Código de rastreio inválido.'
-            };
-
-        data = data.split('SRO Mobile')[0];
-        data = striptags(data, '</td>');
-        data = data.split('\n');
-
-        /**
-         * Realizar leitura, linha por linha
-         * e retirar as informações presentes.
-         */
-        data.forEach(function (line) {
-            if (line) {
-
-                // Split no CSV fake feito no esquema
-                var csv = line.split(',');
-
-                // Se for encaminhamento, trocar valor pela informação de para onde foi encaminhado
-                if (csv[2] == "Encaminhado") {
-                    encaminhados++;
-                    csv[2] = data[posicao + 1];
+                rastreio.codigo     = objeto[0].trim();
+                if (objeto[2]) {
+                    rastreio.situacao   = objeto[1];
+                    rastreio.local      = objeto[2].substr(11, objeto[2].length).trim();
+                    rastreio.data       = objeto[2].substr(0,10).trim();
+                } else {
+                    rastreio.situacao   = 'Objeto ainda não consta no sistema'
                 }
 
-                if (csv.length == 3) {
-                    var values = {
-                        data: csv[0],
-                        local: csv[1],
-                        situacao: csv[2]
-                    };
-
-                    rastreio.push(values);
-                }
-
+                objetos[rastreio.codigo] = rastreio;
             }
-            posicao++;
         });
-        return rastreio.reverse();
+
+        return Object.assign({}, objetos);
     }
 
 };

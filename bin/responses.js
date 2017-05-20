@@ -1,8 +1,5 @@
 var xml_return = require("./xml_return");
 
-
-
-
 /**
  * Retorna a resposta HTTP de acordo com o tipo escolhido em rota
  * @param type
