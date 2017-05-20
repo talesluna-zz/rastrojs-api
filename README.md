@@ -3,9 +3,15 @@ Rastro - API Rastreamento de objetos - Correios NodeJS/Express
 
 Retorna dados de rastreamento de objetos nos correios por meio do código de rastreio com saídas em JSON ou XML.
 
+### Observação Imortante
+Os correios desativaram o sistema WebSRO (websro.correios.com.br) em maio de 2017, esse sistema informava todos os dados de rastreio do objeto desde a origem até o destino, alguns desenvolvedores estão disponibilizando sites de consulta baseados no antigo WebSRO, decidi não usar estes meios para servir essa API pois são páginas de terceiros contendo propagandas e que podem ficar instáveis, em vez disso utilizei outra página oficial dos Correios para fazer a consulta, porém desse modo por hora só é possivel ver a última situação do objeto.
+
+### Novidades
+Foi acicionado a consulta de multiplos objetos, se parados por ; (ponto e virgula), veja os exemplos abaixo
+
 ### Exemplos:
-- http://you_host:port/xml/JGXXXXXXXXXBR
-- http://you_host:port/json/JGXXXXXXXXXBR
+- http://you_host:port/xml/DUXX1595899BR;DUYY1595799BR
+- http://you_host:port/json/DUXX1595899BR;DUYY1595799BR
 
 ### Uso/Instalação:
 
@@ -22,7 +28,7 @@ $ npm start
 
     > Informações presentes e exibidas
 
-- 404 NOT_FOUND
+- 404 NOT_FOUND (obsoleto por enquanto)
     
     > Não foram encontradas informações de rastreio
     
@@ -42,49 +48,38 @@ $ npm start
     ``` XML
         <?xml version='1.0'?>
         <rastreio>
-            <rastreio>
-                <data>10/08/2016 17:49</data>
-                <local>CTCE VITORIA/GCCAP - VIANA/ES</local>
-                <situacao>Postado depois do horário limite da agência</situacao>
-            </rastreio>
-            <rastreio>
-                <data>10/08/2016 18:30</data>
-                <local>CTCE VITORIA/GCCAP - VIANA/ES</local>
-                <situacao>Encaminhado para CTE BELO HORIZONTE - BELO HORIZONTE/MG</situacao>
-            </rastreio>
+            <DUXX1595899BR>
+                <codigo>DUXX1595899BR</codigo>
+                <situacao>Objeto entregue ao destinatário</situacao>
+                <local>Santana Do Paraiso/MG</local>
+                <data>18/05/2017</data>
+            </DUXX1595899BR>
+            <DUYY1595799BR>
+                <codigo>DUYY1595799BR</codigo>
+                <situacao>Objeto ainda não consta no sistema</situacao>
+                <local>null</local>
+                <data>null</data>
+            </DUYY1595799BR>
         </rastreio>
     ```
 
 - JSON
 
     ```JSON
-    [ 
-        {
-            "data" : "10/08/2016 17:49",
-            "local" : "CTCE VITORIA/GCCAP - VIANA/ES",
-            "situacao" : "Postado depois do horário limite da agência"
+    {
+        "DUXX1595899BR": {
+            "codigo": "DUXX1595899BR",
+            "situacao": "Objeto entregue ao destinatário",
+            "local": "Santana Do Paraiso/MG",
+            "data": "18/05/2017"
         },
-        {
-            "data" : "10/08/2016 18:30",
-            "local" : "CTCE VITORIA/GCCAP - VIANA/ES",
-            "situacao" : "Encaminhado para CTE BELO HORIZONTE - BELO HORIZONTE/MG"
-        },
-        {
-            "data" : "11/08/2016 09:21",
-            "local" : "CTE BELO HORIZONTE - BELO HORIZONTE/MG",
-            "situacao" : "Encaminhado para CEE VALE DO ACO - Santana Do Paraiso/MG"
-        },
-        {
-            "data" : "12/08/2016 10:10",
-            "local" : "Santana Do Paraiso/MG",
-            "situacao" : "Saiu para entrega ao destinatário"
-        },
-        {
-            "data" : "12/08/2016 19:42",
-            "local" : "CEE VALE DO ACO - Santana Do Paraiso/MG",
-            "situacao" : "Entrega Efetuada"
+        "DUYY1595799BR": {
+            "codigo": "DUYY1595799BR",
+            "situacao": "Objeto ainda não consta no sistema",
+            "local": null,
+            "data": null
         }
-    ]
+    }
     ```
 
 ### License:
