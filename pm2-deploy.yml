@@ -1,0 +1,8 @@
+apps:
+  - script      : dist/app.js
+    name        : rastrojs
+    instances   : 2
+    exec_mode   : cluster
+    watch       : true
+    env         :
+      NODE_ENV  : production
