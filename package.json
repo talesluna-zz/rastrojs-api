@@ -1,20 +1,51 @@
 {
-  "name": "rastrojs",
-  "description": "Rastro - API Rastreamento de objetos - Correios",
-  "version": "1.0.3",
-  "private": true,
+  "name": "base-nodejs-api-es6",
+  "version": "v2.0",
+  "description": "Base for NodeJS REST API using ExpressJS, deploy local with PM2 and in containers with Docker.",
+  "main": "src/app.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "dev": "export NODE_ENV='development' && nodemon --exec babel-node src/app.js --use_strict",
+    "test": "export NODE_ENV='test' && mocha --timeout 10000 src/tests/ --compilers js:babel-core/register --recursive",
+    "build": "export NODE_ENV='production' && npm run clean && babel src --presets minify --ignore test.js --out-dir ./dist --copy-files",
+    "clean": "rm -rf dist && mkdir dist",
+    "start": "pm2 start pm2-deploy.yml",
+    "stop": "pm2 stop pm2-deploy.yml",
+    "reatrt": "pm2 restart pm2-deploy.yml",
+    "start-docker": "sudo docker-compose up -d ; sudo docker ps",
+    "stop-docker": "sudo docker-compose stop"
   },
   "author": "Tales Luna <tales.ferreira.luna@gmail.com>",
   "license": "MIT",
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-minify": "^0.2.0",
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "eslint": "^4.0.0-rc.0",
+    "mocha": "^3.4.2",
+    "nodemon": "^1.11.0"
+  },
   "dependencies": {
-    "cheerio": "^0.22.0",
-    "debug": "~2.2.0",
-    "express": "~4.13.4",
-    "http-status-codes": "^1.0.6",
-    "js2xmlparser": "^2.0.2",
-    "request": "^2.75.0",
-    "request-promise": "^4.1.1"
+    "acl": "^0.4.10",
+    "body-parser": "^1.17.2",
+    "cheerio": "^1.0.0-rc.2",
+    "compression": "^1.7.0",
+    "crypto": "^1.0.1",
+    "express": "^4.15.3",
+    "helmet": "^3.8.1",
+    "iconv-lite": "^0.4.19",
+    "joi": "^10.5.2",
+    "js2xmlparser": "^3.0.0",
+    "json2csv": "^3.11.5",
+    "mongoose": "^4.11.0",
+    "morgan": "^1.8.2",
+    "mysql2": "^1.4.2",
+    "pg": "^6.1.0",
+    "pg-hstore": "^2.3.2",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
+    "sequelize": "^4.3.2"
   }
 }
