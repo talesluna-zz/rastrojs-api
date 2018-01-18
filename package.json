@@ -1,7 +1,7 @@
 {
-  "name": "base-nodejs-api-es6",
+  "name": "rastrojs",
   "version": "v2.0",
-  "description": "Base for NodeJS REST API using ExpressJS, deploy local with PM2 and in containers with Docker.",
+  "description": "Rastro - API Rastreamento de objetos - Correios NodeJS/Express",
   "main": "src/app.js",
   "scripts": {
     "dev": "export NODE_ENV='development' && nodemon --exec babel-node src/app.js --use_strict",
