@@ -10,9 +10,14 @@ Retorna dados de rastreamento de objetos nos correios por meio do código de ras
 - XML
 - CSV
 
+### Rota básica
+/track/:_trackId/:_outputType
+
 ### Exemplos:
-- http://you_host:port/track/DUXX1595899BR
-- http://you_host:port/track/DUXX1595899BR
+- http://you_host:port/track/DUXX1595899BR/json
+- http://you_host:port/track/DUXX1595899BR/xml
+- http://you_host:port/track/DUXX1595899BR/csv
+
 
 ### Uso/Instalação:
 
