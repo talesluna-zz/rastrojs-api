@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
 export default mongoose.model(
-    'ReadObjectsLog',
+    'TracksLog',
     mongoose.Schema(
         {
-            name: {
-                objectId: String,
-                data: {
+            trackId: String,
+            tracks: [
+                {
                     status: {
                         type: String,
                         required: true,
@@ -21,19 +21,15 @@ export default mongoose.model(
                         type: String,
                         required: true
                     },
-                    date: {
-                        type: String,
-                        required: true
-                    },
                     hour: {
                         type: String,
                         required: true
                     }
                 }
-            }
+            ]
         },
         {
-            collection: 'ReadObjectsLog',
+            collection: 'TracksLog',
             timestamps: true
         }
     )

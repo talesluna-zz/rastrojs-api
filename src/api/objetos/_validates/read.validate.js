@@ -6,12 +6,12 @@ export default (req, res, next) => {
         'json',
         'xml',
         'csv'
-    ]
+    ];
 
     Joi
         .object(
             {
-                _objectsId: Joi.string().length(13),
+                _trackId: Joi.string().length(13),
                 _outputType: Joi.string().valid(outputTypesList)
             }
         )

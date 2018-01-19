@@ -6,7 +6,7 @@ export default (req, res) => {
     /**
      * Find object in correios.com.br
      */
-    CorreiosService.findObject(req.params._objectsId)
+    CorreiosService.findObject(req.params._trackId)
     .then(track => {
 
         // Case requested response type is json use default api structure for responses
