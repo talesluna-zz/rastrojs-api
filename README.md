@@ -23,9 +23,9 @@ Retorna dados de rastreamento de objetos nos correios por meio do código de ras
 
 Em sua linha de comando execute:
 ```sh
-$ git clone https://github.com/talesluna/RastroJS/ && cd RastroJs
+$ git clone https://github.com/talesluna/RastroJS/ && cd RastroJS
 $ npm install
-$ npm run dev (modo de desenvolvimnto)
+$ npm run dev (modo de desenvolvimento)
 $ npm build (fazer build es6 com babel)
 $ npm start (iniciar a api com PM2 no host)
 $ npm start-docker (fazer pull e iniciar a api em container docker)
