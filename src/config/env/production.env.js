@@ -34,7 +34,7 @@ module.exports = {
             dialect     : 'mongodb',
             charset     : 'utf8',
             logging     : true,
-            enabled     : true,
+            enabled     : false,
             configWith  : 'mongoose'
         },
 
