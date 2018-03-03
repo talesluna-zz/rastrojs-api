@@ -8,7 +8,7 @@ module.exports = {
     server: {
         secure: true,
         host: '127.0.0.1',
-        port: 3001,
+        port: 3000,
         cors: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
