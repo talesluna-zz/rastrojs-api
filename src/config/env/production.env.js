@@ -21,23 +21,15 @@ module.exports = {
         mongodb: {
             servers: [
                 {
-                    host: 'cluster0-shard-00-00-gbhki.mongodb.net',
-                    port: 27017
-                },
-                {
-                    host: ' cluster0-shard-00-01-gbhki.mongodb.net',
-                    port :27017
-                },
-                {
-                    host: 'cluster0-shard-00-02-gbhki.mongodb.net',
+                    host: 'localhost',
                     port: 27017
                 }
             ],
-            replicaSet  : 'Cluster0-shard-0',
+            replicaSet  : 'localhost',
             authSource  : 'admin',
             ssl         : true,
-            user        : 'talesluna',
-            pass        : '8613$$',
+            user        : 'admin',
+            pass        : 'admin',
             name        : 'example',
             dialect     : 'mongodb',
             charset     : 'utf8',
