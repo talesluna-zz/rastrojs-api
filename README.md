@@ -26,6 +26,7 @@ Em sua linha de comando execute:
 $ git clone https://github.com/talesluna/RastroJS/ && cd RastroJS
 $ npm install
 $ npm run dev (modo de desenvolvimento)
+$ # Configurar o ambiente e a api (dev, prod ou test) em config/env/*.env.js
 $ npm build (fazer build es6 com babel)
 $ npm start (iniciar a api com PM2 no host)
 $ npm start-docker (fazer pull e iniciar a api em container docker)
