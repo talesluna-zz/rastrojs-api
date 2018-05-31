@@ -21,7 +21,8 @@ class CorreiosFindObject {
            {
                uri: endpoint,
                method: method,
-               form: data
+               form: data,
+               encoding: null
            }
        ).then(data => {
            return iconv.decode(Buffer.from(data), 'binary')
