@@ -1,3 +1,4 @@
+/* eslint-disable id-length */
 import request  from 'request-promise';
 import cheerio  from 'cheerio';
 import iconv    from 'iconv-lite';
@@ -11,52 +12,56 @@ class CorreiosFindObject {
     }
 
     /**
-     * 
-     * @param {*} endpoint 
-     * @param {*} method 
-     * @param {*} data 
+     * @param {*} endpoint
+     * @param {*} method
+     * @param {*} data
      */
     _request(endpoint, method = 'GET', data = null) {
        return request(
            {
                uri: endpoint,
                method: method,
-               form: data
+               form: data,
+               encoding: null
            }
-       ).then(data => {
-           return iconv.decode(Buffer.from(data), 'binary')
+       ).then(html => {
+           return iconv.decode(Buffer.from(html), 'binary')
        })
     }
 
     /**
-     * 
-     * @param {*} html 
+     *
+     * @param {*} html
      */
     parser(html) {
         const $         = cheerio.load(html);
         const tracks    = [];
         const domTracks = $('.listEvent').find('tr');
 
-        domTracks.map(function (key, track) {
+        domTracks.toArray().forEach(track => {
 
-            let trackData = [];
+            const trackData = [];
 
             // Procura e armazena os dado de cadas rastreio.
             // A primeira linha contém data e unidade, a segunda a situação
-            $(track).find('td').map(function (key, domData) {
-                const data = $(domData).text().replace(/\n|\r|\t/g, '').trim();
-                if (data) {
-                    trackData.push(data);
-                }
-            });
+            $(track)
+                .find('td')
+                .toArray()
+                .forEach(domData => {
+
+                    // Verifica se existe informação
+                    const data = $(domData).text()
+                        .replace(/[\n\r\t]/g, '')
+                        .trim();
+
+                    if (data) {
+                        trackData.push(data);
+                    }
+                });
 
             // Trata os dados presentes em cada linha da tabela
-            trackData.forEach(function (data, key) {
-                if (key === 0) {
-                    trackData[key] = data.split(/\s\s+/g);
-                } else {
-                    trackData[key] = data.replace(/\s\s+/g,'');
-                }
+            trackData.forEach((data, trackKey) => {
+                trackData[trackKey] = trackKey === 0 ? data.split(/\s\s+/g) : data.replace(/\s\s+/g, ' ');
             });
 
             // Armazena os dados finais do rastreito na lista
@@ -75,29 +80,24 @@ class CorreiosFindObject {
     }
 
     /**
-     * 
-     * @param {*} objectId 
+     *
+     * @param {*} objectId
      */
     find(objectId) {
-        return this._request(
-            this.ENDPOINTS.find,
-            'POST',
-            {
-                objetos: objectId
-            }
-        )
-        .then(html => {
-            return this.parser(html);
-        })
-        .then(track => {
-            if (track.length)
-                return track;
+        return this
+            ._request(this.ENDPOINTS.find, 'POST', {objetos: objectId})
+            .then(html => {
+                return this.parser(html);
+            })
+            .then(track => {
+                if (!track.length)
+                    throw new Error('Objeto não encontrado no sistema dos Correios.');
 
-            throw new Error('Objeto não encontrado no sistema dos Correios.')
-        })
-        .catch(err => {
-            throw err;
-        })
+                return track;
+            })
+            .catch(err => {
+                throw err;
+            })
     }
 }
 
