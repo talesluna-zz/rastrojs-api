@@ -1,27 +1,32 @@
-import json2csv     from 'json2csv';
-import js2xmlparser from 'js2xmlparser';
+import json2csv from 'json2csv';
+import json2xml from 'js2xmlparser';
 
 class FormatResponse {
-    constructor() {}
 
+    /**
+     * Convert base response to selected type
+     * @param data
+     * @param type
+     * @returns {{data: *, type: *}}
+     */
     format(data, type) {
 
-        let formatedData    = null;
+        let formattedData   = null;
         let mimeType        = null;
 
         switch (type) {
             case 'json': {
-                formatedData    = data;
+                formattedData   = data;
                 mimeType        = 'application/json';
                 break;
             }
             case 'xml': {
-                formatedData    = js2xmlparser.parse('track', data);
+                formattedData   = json2xml.parse('track', data);
                 mimeType        = 'text/xml';
                 break;
             }
             case 'csv': {
-                formatedData    = json2csv({data: data, fields: null});
+                formattedData   = json2csv({data: data, fields: null});
                 mimeType        = 'text/x-csv';
                 break;
             }
@@ -32,7 +37,7 @@ class FormatResponse {
         }
 
         return {
-            data: formatedData,
+            data: formattedData,
             type: mimeType
         }
     }

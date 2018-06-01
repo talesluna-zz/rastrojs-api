@@ -1,4 +1,4 @@
-import CorreiosService  from '../../services/correios.service';
+import CorreiosTrackObject from '../../services/correios/correios.trackObject';
 import FormatResponse   from '../../services/formatResponse.service';
 
 export default (req, res) => {
@@ -6,7 +6,7 @@ export default (req, res) => {
     /**
      * Find object in correios.com.br
      */
-    CorreiosService.findObject(req.params._trackId)
+    CorreiosTrackObject.track(req.params._trackId)
     .then(track => {
 
         // Case requested response type is json use default api structure for responses
@@ -23,7 +23,6 @@ export default (req, res) => {
 
     })
     .catch(err => {
-
         // Same for errors
         if (req.params._outputType === 'json')
             return res.api.send(err.message, res.api.codes.NOT_FOUND);

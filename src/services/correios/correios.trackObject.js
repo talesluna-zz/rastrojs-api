@@ -1,33 +1,11 @@
 /* eslint-disable id-length */
-import request  from 'request-promise';
 import cheerio  from 'cheerio';
-import iconv from 'iconv-lite';
+import CorreiosService from '../correios.service';
 
-class CorreiosFindObject {
+class CorreiosTrackObject extends CorreiosService {
 
     constructor() {
-        this.ENDPOINTS = {
-            find: 'http://www2.correios.com.br/sistemas/rastreamento/resultado_semcontent.cfm'
-        }
-    }
-
-    /**
-     * Build HTTP request to SRO
-     * @param {*} endpoint 
-     * @param {*} method 
-     * @param {*} data
-     */
-    _request(endpoint, method = 'GET', data = null) {
-       return request(
-           {
-               uri      : endpoint,
-               form     : data,
-               method   : method,
-               encoding : null
-           }
-       ).then(html => {
-           return iconv.decode(Buffer.from(html), 'binary')
-       })
+        super();
     }
 
     /**
@@ -79,7 +57,7 @@ class CorreiosFindObject {
         });
 
         // Retorna a lista de rastreios
-        return tracks;
+        return tracks.reverse();
     }
 
     /**
@@ -89,15 +67,15 @@ class CorreiosFindObject {
      *
      * @param {*} objectCode
      */
-    find(objectCode) {
-        return this._request(this.ENDPOINTS.find, 'POST', {objetos: objectCode})
+    track(objectCode) {
+        return this._simpleRequest(this.ENDPOINTS.trackObject, 'POST', {objetos: objectCode})
             .then(html => {
                 return this.parser(html);
             })
             .then(track => {
                 // Not object found
                 if (!track.length)
-                    throw new Error('Objeto não encontrado no sistema dos Correios.');
+                    throw new Error('objeto não encontrado no sistema dos correios.');
 
 
                 // Return found object
@@ -109,4 +87,4 @@ class CorreiosFindObject {
     }
 }
 
-export default new CorreiosFindObject();
+export default new CorreiosTrackObject();
