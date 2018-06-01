@@ -39,41 +39,43 @@ class CorreiosFindObject {
         const tracks    = [];
         const domTracks = $('.listEvent').find('tr');
 
-        domTracks.toArray().forEach(track => {
+        domTracks
+            .toArray()
+            .forEach(track => {
 
-            const trackData = [];
+                const trackData = [];
 
-            // Procura e armazena os dado de cadas rastreio.
-            // A primeira linha contém data e unidade, a segunda a situação
-            $(track)
-                .find('td')
-                .toArray()
-                .forEach(domData => {
+                // Procura e armazena os dado de cadas rastreio.
+                // A primeira linha contém data e unidade, a segunda a situação
+                $(track)
+                    .find('td')
+                    .toArray()
+                    .forEach(domData => {
 
-                    // Verifica se existe informação
-                    const data = $(domData).text()
-                        .replace(/[\n\r\t]/g, '')
-                        .trim();
+                        // Verifica se existe informação
+                        const data = $(domData).text()
+                            .replace(/[\n\r\t]/g, '')
+                            .trim();
 
-                    if (data) {
-                        trackData.push(data);
-                    }
+                        if (data) {
+                            trackData.push(data);
+                        }
+                    });
+
+                // Trata os dados presentes em cada linha da tabela
+                trackData.forEach((data, trackKey) => {
+                    trackData[trackKey] = trackKey === 0 ? data.split(/\s\s+/g) : data.replace(/\s\s+/g, ' ');
                 });
 
-            // Trata os dados presentes em cada linha da tabela
-            trackData.forEach((data, trackKey) => {
-                trackData[trackKey] = trackKey === 0 ? data.split(/\s\s+/g) : data.replace(/\s\s+/g, ' ');
-            });
-
-            // Armazena os dados finais do rastreito na lista
-            tracks.push(
-                {
-                    status  : trackData[1].toLowerCase(),
-                    date    : trackData[0][0],
-                    hour    : trackData[0][1],
-                    unit    : trackData[0][2].toUpperCase()
-                }
-            )
+                // Armazena os dados finais do rastreito na lista
+                tracks.push(
+                    {
+                        status  : trackData[1].toLowerCase(),
+                        date    : trackData[0][0],
+                        hour    : trackData[0][1],
+                        unit    : trackData[0][2].toUpperCase()
+                    }
+                )
         });
 
         // Retorna a lista de rastreios
