@@ -1,7 +1,7 @@
+/* eslint-disable id-length */
 import request  from 'request-promise';
 import cheerio  from 'cheerio';
-import legacy from 'legacy-encoding';
-import windows1252 from 'windows-1252';
+import iconv from 'iconv-lite';
 
 class CorreiosFindObject {
 
@@ -15,53 +15,54 @@ class CorreiosFindObject {
      * Build HTTP request to SRO
      * @param {*} endpoint 
      * @param {*} method 
-     * @param {*} data 
+     * @param {*} data
      */
     _request(endpoint, method = 'GET', data = null) {
        return request(
            {
                uri      : endpoint,
                form     : data,
-               method   : method
+               method   : method,
+               encoding : null
            }
-       ).then(data => {
-           return legacy.decode(data, 'windows-1252')
-               .toString('utf-8')
-               .replace(/ýýo/g, 'ção')
-               .replace(/gýn/g, 'gên')
-               .replace(/týr/g, 'tár');
+       ).then(html => {
+           return iconv.decode(Buffer.from(html), 'binary')
        })
     }
 
     /**
-     * 
-     * @param {*} html 
+     * Parse HTML width cheerio and format response
+     * @param {*} html
      */
     parser(html) {
         const $         = cheerio.load(html);
         const tracks    = [];
         const domTracks = $('.listEvent').find('tr');
 
-        domTracks.map(function (key, track) {
+        domTracks.toArray().forEach(track => {
 
-            let trackData = [];
+            const trackData = [];
 
-            // Procura e armazena os dado de cada rastreio.
-            // A primeira linha contém data e unidade e a segunda a situação da postagem
-            $(track).find('td').map(function (key, domData) {
-                const data = $(domData).text().replace(/\n|\r|\t/g, '').trim();
-                if (data) {
-                    trackData.push(data);
-                }
-            });
+            // Procura e armazena os dado de cadas rastreio.
+            // A primeira linha contém data e unidade, a segunda a situação
+            $(track)
+                .find('td')
+                .toArray()
+                .forEach(domData => {
+
+                    // Verifica se existe informação
+                    const data = $(domData).text()
+                        .replace(/[\n\r\t]/g, '')
+                        .trim();
+
+                    if (data) {
+                        trackData.push(data);
+                    }
+                });
 
             // Trata os dados presentes em cada linha da tabela
-            trackData.forEach(function (data, key) {
-                if (key === 0) {
-                    trackData[key] = data.split(/\s\s+/g);
-                } else {
-                    trackData[key] = data.replace(/\s\s+/g, ' ');
-                }
+            trackData.forEach((data, trackKey) => {
+                trackData[trackKey] = trackKey === 0 ? data.split(/\s\s+/g) : data.replace(/\s\s+/g, ' ');
             });
 
             // Armazena os dados finais do rastreito na lista
@@ -92,7 +93,6 @@ class CorreiosFindObject {
                 return this.parser(html);
             })
             .then(track => {
-
                 // Not object found
                 if (!track.length)
                     throw new Error('Objeto não encontrado no sistema dos Correios.');
@@ -100,7 +100,6 @@ class CorreiosFindObject {
 
                 // Return found object
                 return track;
-
             })
             .catch(err => {
                 throw err;
