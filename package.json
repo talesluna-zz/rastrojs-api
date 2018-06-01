@@ -33,12 +33,15 @@
     "cheerio": "^1.0.0-rc.2",
     "compression": "^1.7.0",
     "crypto": "^1.0.1",
+    "encoding": "^0.1.12",
     "express": "^4.15.3",
     "helmet": "^3.8.1",
+    "iconv": "^2.3.0",
     "iconv-lite": "^0.4.19",
     "joi": "^10.5.2",
     "js2xmlparser": "^3.0.0",
     "json2csv": "^3.11.5",
+    "legacy-encoding": "^3.0.0",
     "mongoose": "^4.11.0",
     "morgan": "^1.8.2",
     "mysql2": "^1.4.2",
@@ -46,6 +49,7 @@
     "pg-hstore": "^2.3.2",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
-    "sequelize": "^4.3.2"
+    "sequelize": "^4.3.2",
+    "windows-1252": "^1.0.0"
   }
 }

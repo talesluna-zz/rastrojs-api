@@ -9,8 +9,8 @@ export default class SSL {
          * @type {{privateKey: (string|*), certificate: (string|*)}}
          */
         this.files = {
-            privateKey  : path.join(__dirname, '../storage/certificates/example.key'),
-            certificate : path.join(__dirname, '../storage/certificates/example.crt')
+            privateKey  : path.join(__dirname, '../storage/certificates/ssl.key'),
+            certificate : path.join(__dirname, '../storage/certificates/ssl.crt')
         };
 
         /**

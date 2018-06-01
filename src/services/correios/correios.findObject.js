@@ -1,17 +1,18 @@
 import request  from 'request-promise';
 import cheerio  from 'cheerio';
-import iconv    from 'iconv-lite';
+import legacy from 'legacy-encoding';
+import windows1252 from 'windows-1252';
 
 class CorreiosFindObject {
 
     constructor() {
         this.ENDPOINTS = {
-            find: 'http://www2.correios.com.br/sistemas/rastreamento/newprint.cfm'
+            find: 'http://www2.correios.com.br/sistemas/rastreamento/resultado_semcontent.cfm'
         }
     }
 
     /**
-     * 
+     * Build HTTP request to SRO
      * @param {*} endpoint 
      * @param {*} method 
      * @param {*} data 
@@ -19,12 +20,16 @@ class CorreiosFindObject {
     _request(endpoint, method = 'GET', data = null) {
        return request(
            {
-               uri: endpoint,
-               method: method,
-               form: data
+               uri      : endpoint,
+               form     : data,
+               method   : method
            }
        ).then(data => {
-           return iconv.decode(Buffer.from(data), 'binary')
+           return legacy.decode(data, 'windows-1252')
+               .toString('utf-8')
+               .replace(/ýýo/g, 'ção')
+               .replace(/gýn/g, 'gên')
+               .replace(/týr/g, 'tár');
        })
     }
 
@@ -41,8 +46,8 @@ class CorreiosFindObject {
 
             let trackData = [];
 
-            // Procura e armazena os dado de cadas rastreio.
-            // A primeira linha contém data e unidade, a segunda a situação
+            // Procura e armazena os dado de cada rastreio.
+            // A primeira linha contém data e unidade e a segunda a situação da postagem
             $(track).find('td').map(function (key, domData) {
                 const data = $(domData).text().replace(/\n|\r|\t/g, '').trim();
                 if (data) {
@@ -55,7 +60,7 @@ class CorreiosFindObject {
                 if (key === 0) {
                     trackData[key] = data.split(/\s\s+/g);
                 } else {
-                    trackData[key] = data.replace(/\s\s+/g,'');
+                    trackData[key] = data.replace(/\s\s+/g, ' ');
                 }
             });
 
@@ -75,29 +80,31 @@ class CorreiosFindObject {
     }
 
     /**
-     * 
-     * @param {*} objectId 
+     * Find object on "correios" SRO
+     * Parse SRO response
+     * Return tracked objects
+     *
+     * @param {*} objectCode
      */
-    find(objectId) {
-        return this._request(
-            this.ENDPOINTS.find,
-            'POST',
-            {
-                objetos: objectId
-            }
-        )
-        .then(html => {
-            return this.parser(html);
-        })
-        .then(track => {
-            if (track.length)
+    find(objectCode) {
+        return this._request(this.ENDPOINTS.find, 'POST', {objetos: objectCode})
+            .then(html => {
+                return this.parser(html);
+            })
+            .then(track => {
+
+                // Not object found
+                if (!track.length)
+                    throw new Error('Objeto não encontrado no sistema dos Correios.');
+
+
+                // Return found object
                 return track;
 
-            throw new Error('Objeto não encontrado no sistema dos Correios.')
-        })
-        .catch(err => {
-            throw err;
-        })
+            })
+            .catch(err => {
+                throw err;
+            })
     }
 }
 
