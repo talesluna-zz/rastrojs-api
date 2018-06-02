@@ -1,16 +1,16 @@
 # RastroJS
 
-### Rastro - API Rastreamento de objetos - Correios NodeJS/Express
+### API de Rastreamento de Objetos - Correios NodeJS/Express
 ### v2.5
 
-Retorna dados de rastreamento de objetos nos correios por meio do código de rastreio.
+Para rastreio e objetos/encomendas nos correios sem uso de webservice.
 
 
 ### Novidades:
-- Padronização lowercase
-- Data de postagem e última atualização fora do "track"
-- Informação direta se objeto já foi entregue
-- Datas em padrão ISO
+- Padronização lowercase.
+- Data de postagem e última atualização fora do "track".
+- Informação direta que determina se o objeto já foi entregue.
+- Datas em padrão ISO.
 
 ### Tipos de retornos suportados:
 JSON, XML ou CSV
