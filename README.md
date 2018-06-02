@@ -45,7 +45,7 @@ $ npm start-docker (fazer pull e iniciar a api em container docker)
 |400|BAD_REQUEST|Informações passadas na requisição estão fora do padrão estabelecido.
 
 
-### Corpo da resposta
+### Corpo da resposta:
 |Campo|Tipo|Suporte|Descrição
 |---|---|---|---|
 |isDelivered|boolean|json e xml|Informa se o objeto já foi entregue ao destrinatário
