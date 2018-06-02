@@ -52,7 +52,7 @@ $ npm start-docker (fazer pull e iniciar a api em container docker)
 |postedAt|ISO String (Date)|json e xml|Data e horário em que o objeto foi postado
 |updatedAt|ISO String (Date)|json e xml|Data e horário da última alteração de rastreio do objeto
 |track.status|String|json, xml e csv|Situação/Descrição do rastreio.
-|track.observations|String|json, xml e csv|Observação do rastrio, encaminhamentos etc...
+|track.observations|String|json, xml e csv|Observação do rastreio, encaminhamentos etc...
 |track.trackedAt|ISO String (Date)|json, xml e csv|Data e horário do rastreio
 |track.unit|ISO String (Date)|json, xml e csv|Unidade dos correios emissora do rastreio
 
