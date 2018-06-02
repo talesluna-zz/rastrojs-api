@@ -1,6 +1,6 @@
 # RastroJS
 
-### API de Rastreamento de Objetos - Correios NodeJS/Express
+### API de Rastreamento de Objetos - Correios - NodeJS/Express
 ### v2.5
 
 Para rastreio e objetos/encomendas nos correios sem uso de webservice.
@@ -163,7 +163,7 @@ $ npm start-docker (fazer pull e iniciar a api em container docker)
 ###### NO BUFFER
 
 ### Author
-Tales Luna <tales.ferreira.luna@gmail.com>
+Tales Luna - <tales.ferreira.luna@gmail.com>
     
 ### License:
 MIT
