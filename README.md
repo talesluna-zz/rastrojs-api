@@ -99,7 +99,7 @@ $ npm start-docker (fazer pull e iniciar a api em container docker)
 
 ```xml
 <?xml version='1.0'?>
-<object>Error: Objeto não encontrado no sistema dos Correios.</object>
+<response>Error: Objeto não encontrado no sistema dos Correios.</response>
 ```
 
 
