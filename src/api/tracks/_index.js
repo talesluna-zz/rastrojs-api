@@ -6,6 +6,6 @@ import readObject from './read';
 
 export default (route) => {
 
-    route.get('/track/:_trackId/:_outputType', readValidate, readObject);
+    route.get('/track/:_objectCode/:_outputType', readValidate, readObject);
     
 };

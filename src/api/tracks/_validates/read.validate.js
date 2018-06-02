@@ -11,7 +11,7 @@ export default (req, res, next) => {
     Joi
         .object(
             {
-                _trackId: Joi.string().length(13),
+                _objectCode: Joi.string().length(13),
                 _outputType: Joi.string().valid(outputTypesList)
             }
         )

@@ -7,9 +7,10 @@ class FormatResponse {
      * Convert base response to selected type
      * @param data
      * @param type
+     * @param xmlMainField
      * @returns {{data: *, type: *}}
      */
-    format(data, type) {
+    format(data, type, xmlMainField = 'response') {
 
         let formattedData   = null;
         let mimeType        = null;
@@ -21,12 +22,12 @@ class FormatResponse {
                 break;
             }
             case 'xml': {
-                formattedData   = json2xml.parse('track', data);
+                formattedData   = json2xml.parse(xmlMainField, data);
                 mimeType        = 'text/xml';
                 break;
             }
             case 'csv': {
-                formattedData   = json2csv({data: data, fields: null});
+                formattedData   = json2csv({data: data.track, fields: null});
                 mimeType        = 'text/x-csv';
                 break;
             }

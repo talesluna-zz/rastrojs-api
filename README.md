@@ -1,23 +1,27 @@
 # RastroJS
 
 ### Rastro - API Rastreamento de objetos - Correios NodeJS/Express
-### v2.0
+### v2.5
 
 Retorna dados de rastreamento de objetos nos correios por meio do código de rastreio.
 
-### Tipos de retornos implementados
-- JSON
-- XML
-- CSV
 
-### Rota básica
-/track/:_trackId/:_outputType
+### Novidades:
+- Padronização lowercase
+- Data de postagem e última atualização fora do "track"
+- Informação direta se objeto já foi entregue
+- Datas em padrão ISO
+
+### Tipos de retornos suportados:
+JSON, XML ou CSV
+
+### Rota básica:
+/track/:_objectCode/:_outputType
 
 ### Exemplos:
 - http://you_host:port/track/DUXX1595899BR/json
 - http://you_host:port/track/DUXX1595899BR/xml
 - http://you_host:port/track/DUXX1595899BR/csv
-
 
 ### Uso/Instalação:
 
@@ -32,102 +36,135 @@ $ npm start (iniciar a api com PM2 no host)
 $ npm start-docker (fazer pull e iniciar a api em container docker)
 ```
 
-### Response Codes:
+### Status e respostas:
 
-- 200 OK
+|Código|Tipo|Descrição|
+|---|---|---|
+|200|OK|Informações presentes e exibidas
+|404|NOT_FOUND|Objeto não encontrado no sistema dos Correios.
+|400|BAD_REQUEST|Informações passadas na requisição estão fora do padrão estabelecido.
 
-    > Informações presentes e exibidas
 
-- 404 NOT_FOUND
+### Campos dos retornos
+|Campo|Tipo|Suporte|Descrição
+|---|---|---|---|
+|isDelivered|boolean|json e xml|Informa se o objeto já foi entregue ao destrinatário
+|postedAt|ISO String (Date)|json e xml|Data e horário em que o objeto foi postado
+|updatedAt|ISO String (Date)|json e xml|Data e horário da última alteração de rastreio do objeto
+|track.status|String|json, xml e csv|Situação/Descrição do rastreio.
+|track.observations|String|json, xml e csv|Observação do rastrio, encaminhamentos etc...
+|track.trackedAt|ISO String (Date)|json, xml e csv|Data e horário do rastreio
+|track.unit|ISO String (Date)|json, xml e csv|Unidade dos correios emissora do rastreio
+
+### Estrutura dos retornos:
+
+#### XML
+
+*200 - OK*
+
+```xml
+<?xml version='1.0'?>
+<object>
+    <isDelivered>true</isDelivered>
+    <postedAt>2018-01-08T11:27:00.000Z</postedAt>
+    <updatedAt>2018-01-10T13:57:00.000Z</updatedAt>
+    <track>
+        <status>objeto postado</status>
+        <observation>null</observation>
+        <trackedAt>2018-01-08T11:27:00.000Z</trackedAt>
+        <unit>belo horizonte / mg</unit>
+    </track>
+    <track>
+        <status>objeto encaminhado</status>
+        <observation>de unidade de tratamento em belo horizonte / mg para unidade de distribuição em são paulo / sp</observation>
+        <trackedAt>2018-01-10T00:08:00.000Z</trackedAt>
+        <unit>belo horizonte / mg</unit>
+    </track>
+    <track>
+        <status>objeto saiu para entrega ao destinatário</status>
+        <observation>null</observation>
+        <trackedAt>2018-01-10T10:57:00.000Z</trackedAt>
+        <unit>são paulo / sp</unit>
+    </track>
+    <track>
+        <status>objeto entregue ao destinatário</status>
+        <observation>null</observation>
+        <trackedAt>2018-01-10T13:57:00.000Z</trackedAt>
+        <unit>são paulo / sp</unit>
+    </track>         
+</object>
+```
+
+*404 - NOT_FOUND*
+
+```xml
+<?xml version='1.0'?>
+<object>Error: Objeto não encontrado no sistema dos Correios.</object>
+```
+
+
+#### JSON
+
+*200 - OK*
     
-    > Objeto não encontrado no sistema dos Correios.
+```json
+{
+  "code": 200,
+  "data": {
+    "isDelivered": false,
+    "postedAt": "2018-01-08T11:27:00.000Z",
+    "updatedAt": "2018-01-10T10:57:00.000Z",
+    "track": [
+      {
+        "status": "objeto postado",
+        "observation": null,
+        "trackedAt": "2018-01-08T11:27:00.000Z",
+        "unit": "belo horizonte / mg"
+      },
+      {
+        "status": "objeto encaminhado",
+        "observation": "de unidade de tratamento em belo horizonte / mg para unidade de distribuição em são paulo / sp",
+        "trackedAt": "2018-01-10T00:08:00.000Z",
+        "unit": "belo horizonte / mg"
+      },
+      {
+        "status": "objeto saiu para entrega ao destinatário",
+        "observation": null,
+        "trackedAt": "2018-01-10T10:57:00.000Z",
+        "unit": "são paulo / sp"
+      }
+    ]  
+  },
+  "message": "success"
+}
+```
 
-- 400 BAD_REQUEST
+*404 - NOT_FOUND*
+```json
+{
+  "code": 404,
+  "data": "Objeto não encontrado no sistema dos Correios.",
+  "message": "not_found"
+}
+```
 
-    > Informações passadas na requisição estão fora do padrão estabelecido.
 
-
-### Retornos:
-
-- XML
-
-    - 200 - OK
-        ``` XML
-            <?xml version='1.0'?>
-            <track>
-                <track>
-                    <status>objeto entregue ao destinatário</status>
-                    <date>10/01/2018</date>
-                    <hour>11:57</hour>
-                    <unit>SÃO PAULO / SP</unit>
-                </track>
-                <track>
-                    <status>objeto postado</status>
-                    <date>08/01/2018</date>
-                    <hour>09:27</hour>
-                    <unit>UBERABA / MG</unit>
-                </track>
-            </track>
-        ```
-
-    - 404 - NOT_FOUND
-        ``` XML
-            <?xml version='1.0'?>
-            <track>Error: Objeto não encontrado no sistema dos Correios.</track>
-        ```
-
-- JSON
-
-    - 200 - OK
-    
-        ```JSON
-            {
-              "code": 200,
-              "data": [
-                {
-                  "status": "objeto entregue ao destinatário",
-                  "date": "10/01/2018",
-                  "hour": "11:57",
-                  "unit": "SÃO PAULO / SP"
-                },
-                {
-                  "status": "objeto postado",
-                  "date": "08/01/2018",
-                  "hour": "09:27",
-                  "unit": "UBERABA / MG"
-                }
-              ],
-              "message": "success"
-            }
-        ```
-        
-     - 404 - NOT_FOUND
-        ```JSON
-            {
-              "code": 404,
-              "data": "Objeto não encontrado no sistema dos Correios.",
-              "message": "not_found"
-            }
-        ```
-
-- CSV
-
-    - 200 - OK
-        ```CSV
-            "status","date","hour","unit"
-            "objeto entregue ao destinatário","10/01/2018","11:57","SÃO PAULO / SP"
-            "objeto postado","08/01/2018","09:27","UBERABA / MG"
-        ```
-        
-    - 404 - NOT_FOUND
-
-        ###### NO BUFFER
+#### CSV
+*200 - OK*
+```CSV
+"status","observation","trackedAt","unit"
+"objeto postado",,"2018-01-08T11:27:00.000Z","belo horizonte / mg"
+"objeto encaminhado","de unidade de tratamento em belo horizonte / mg para unidade de distribuição em são paulo / sp","2018-01-10T00:08:00.000Z","belo horizonte / mg"
+"objeto saiu para entrega ao destinatário",,"2018-01-10T10:57:00.000Z","são paulo / sp"
+"objeto entregue ao destinatário",,"2018-01-10T13:57:00.000Z","são paulo / sp"
+```
+       
+*404 - NOT_FOUND*
+###### NO BUFFER
 
 ### Author
-> Tales Luna
-
-> tales.ferreira.luna@gmail.com
+Tales Luna <tales.ferreira.luna@gmail.com>
     
 ### License:
-- MIT
+MIT
 

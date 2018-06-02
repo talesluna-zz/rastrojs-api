@@ -6,7 +6,7 @@ export default (req, res) => {
     /**
      * Find object in correios.com.br
      */
-    CorreiosTrackObject.track(req.params._trackId)
+    CorreiosTrackObject.track(req.params._objectCode)
     .then(track => {
 
         // Case requested response type is json use default api structure for responses
@@ -14,9 +14,8 @@ export default (req, res) => {
             return res.api.send(track, res.api.codes.OK);
 
         // Others use simple express response
-
         // Format response in requested type
-        const response = FormatResponse.format(track, req.params._outputType);
+        const response = FormatResponse.format(track, req.params._outputType, 'object');
 
         res.set('content-type', response.type);
         return res.status(res.api.codes.OK.code).send(response.data)

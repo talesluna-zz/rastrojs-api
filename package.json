@@ -1,6 +1,6 @@
 {
   "name": "rastrojs",
-  "version": "2.0.0",
+  "version": "2.5.0",
   "description": "Rastro - API Rastreamento de objetos - Correios NodeJS/Express",
   "main": "src/app.js",
   "scripts": {
@@ -38,6 +38,7 @@
     "joi": "^10.5.2",
     "js2xmlparser": "^3.0.0",
     "json2csv": "^3.11.5",
+    "moment": "^2.22.2",
     "mongoose": "^5.1.2",
     "morgan": "^1.8.2",
     "mysql2": "^1.4.2",

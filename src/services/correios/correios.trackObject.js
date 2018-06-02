@@ -1,6 +1,7 @@
 /* eslint-disable id-length */
-import cheerio  from 'cheerio';
-import CorreiosService from '../correios.service';
+import cheerio          from 'cheerio';
+import moment           from 'moment';
+import CorreiosService  from '../correios.service';
 
 class CorreiosTrackObject extends CorreiosService {
 
@@ -42,22 +43,38 @@ class CorreiosTrackObject extends CorreiosService {
 
                 // Trata os dados presentes em cada linha da tabela
                 trackData.forEach((data, trackKey) => {
-                    trackData[trackKey] = trackKey === 0 ? data.split(/\s\s+/g) : data.replace(/\s\s+/g, ' ');
+                    trackData[trackKey] = data.split(/\s\s+/g);
                 });
 
                 // Armazena os dados finais do rastreito na lista
                 tracks.push(
                     {
-                        status  : trackData[1].toLowerCase(),
-                        date    : trackData[0][0],
-                        hour    : trackData[0][1],
-                        unit    : trackData[0][2].toUpperCase()
+                        status          : trackData[1][0].toLowerCase(),
+                        observation     : trackData[1][1] ? trackData[1][1].toLowerCase() : null,
+                        trackedAt       : moment(trackData[0][0] + trackData[0][1], "DD/MM/YYYYHH:mm").toISOString(),
+                        unit            : trackData[0][2].toLowerCase()
                     }
                 )
         });
 
+        if (!tracks.length) {
+            return null;
+        }
+
+        // Reorder tracks
+        tracks.reverse();
+
+        // Detect first and last tracks
+        const firstTrack    = tracks[0];
+        const lastTrack     = tracks[tracks.length-1];
+
         // Retorna a lista de rastreios
-        return tracks.reverse();
+        return {
+            isDelivered : lastTrack.status.includes('objeto entregue'),
+            postedAt    : firstTrack.trackedAt,
+            updatedAt   : lastTrack.trackedAt,
+            track       : tracks
+        };
     }
 
     /**
@@ -72,14 +89,14 @@ class CorreiosTrackObject extends CorreiosService {
             .then(html => {
                 return this.parser(html);
             })
-            .then(track => {
+            .then(objectTracking => {
                 // Not object found
-                if (!track.length)
+                if (!objectTracking || !objectTracking.track.length)
                     throw new Error('objeto não encontrado no sistema dos correios.');
 
 
                 // Return found object
-                return track;
+                return objectTracking;
             })
             .catch(err => {
                 throw err;
