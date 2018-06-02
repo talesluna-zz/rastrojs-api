@@ -45,7 +45,7 @@ $ npm start-docker (fazer pull e iniciar a api em container docker)
 |400|BAD_REQUEST|Informações passadas na requisição estão fora do padrão estabelecido.
 
 
-### Campos dos retornos
+### Corpo da resposta
 |Campo|Tipo|Suporte|Descrição
 |---|---|---|---|
 |isDelivered|boolean|json e xml|Informa se o objeto já foi entregue ao destrinatário
@@ -56,7 +56,7 @@ $ npm start-docker (fazer pull e iniciar a api em container docker)
 |track.trackedAt|ISO String (Date)|json, xml e csv|Data e horário do rastreio
 |track.unit|ISO String (Date)|json, xml e csv|Unidade dos correios emissora do rastreio
 
-### Estrutura dos retornos:
+### Estrutura da resposta:
 
 #### XML
 
