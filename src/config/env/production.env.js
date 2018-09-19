@@ -7,8 +7,8 @@ module.exports = {
     },
     server: {
         secure: false,
-        host: '127.0.0.1',
-        port: 80,
+        host: '0.0.0.0',
+        port: 8080,
         cors: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
