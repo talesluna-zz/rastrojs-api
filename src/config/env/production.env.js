@@ -2,13 +2,13 @@
 
 module.exports = {
     app: {
-        name: 'API Name - DEV MODE',
+        name: 'Rastro - Rastreamento de objetos dos Correios',
         version: '1.1.0'
     },
     server: {
-        secure: true,
+        secure: false,
         host: '127.0.0.1',
-        port: 3000,
+        port: 80,
         cors: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
