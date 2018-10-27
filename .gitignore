@@ -7,4 +7,4 @@ dist
 releases
 node_modules/
 storage/logs
-pull-heroku.sh
+push-heroku.sh
