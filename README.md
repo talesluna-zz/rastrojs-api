@@ -26,7 +26,7 @@ GET /track/DUXX1595899BR/csv
 ```
 
 
-### Status e respostas:
+### Status:
 
 |Código|Tipo|Descrição|
 |---|---|---|
@@ -35,7 +35,7 @@ GET /track/DUXX1595899BR/csv
 |400|BAD_REQUEST|Informações passadas na requisição estão fora do padrão estabelecido.
 
 
-### Corpo da resposta:
+### Corpo de resposta:
 |Campo|Tipo|Suporte|Descrição
 |---|---|---|---|
 |isDelivered|boolean|json e xml|Informa se o objeto já foi entregue ao destrinatário
@@ -176,8 +176,9 @@ $ npm install
 $ npm run dev (modo de desenvolvimento)
 $ # Configurar o ambiente e a api (dev, prod ou test) em config/env/*.env.js
 $ npm build (fazer build es6 com babel)
-$ npm start (iniciar a api com PM2 no host)
-$ npm start-docker (fazer pull e iniciar a api em container docker)
+$ npm start (iniciar com processo node simples)
+$ npm start:pm2 (iniciar a api com PM2 no host)
+$ npm start:docker (fazer pull e iniciar a api em container docker)
 ```
 
 

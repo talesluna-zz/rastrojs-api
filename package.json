@@ -8,11 +8,11 @@
     "test": "export NODE_ENV='test' && mocha --timeout 10000 src/tests/ --compilers js:babel-core/register --recursive",
     "build": "export NODE_ENV='production' && npm run clean && babel src --ignore test.js --out-dir ./dist --copy-files",
     "clean": "rm -rf dist && mkdir dist",
-    "start": "pm2 start pm2-deploy.yml",
-    "stop": "pm2 stop pm2-deploy.yml",
-    "reatrt": "pm2 restart pm2-deploy.yml",
-    "start-docker": "sudo docker-compose up -d ; sudo docker ps",
-    "stop-docker": "sudo docker-compose stop"
+    "start": "export NODE_ENV='development' && node dist/app.js",
+    "stop:pm2": "pm2 stop pm2-deploy.yml",
+    "reatrt:pm2": "pm2 restart pm2-deploy.yml",
+    "start:docker": "sudo docker-compose up -d ; sudo docker ps",
+    "stop:docker": "sudo docker-compose stop"
   },
   "author": "Tales Luna <tales.ferreira.luna@gmail.com>",
   "license": "MIT",
