@@ -48,9 +48,57 @@ GET /track/DUXX1595899BR/csv
 
 ### Formato de resposta
 
+
+**- GET /track/DUXX1595899BR/json 200 OK**
+
+```json
+
+{
+  "code": 200,
+  "data": {
+    "isDelivered": false,
+    "postedAt": "2018-01-08T11:27:00.000Z",
+    "updatedAt": "2018-01-10T10:57:00.000Z",
+    "track": [
+      {
+        "status": "objeto postado",
+        "observation": null,
+        "trackedAt": "2018-01-08T11:27:00.000Z",
+        "unit": "belo horizonte / mg"
+      },
+      {
+        "status": "objeto encaminhado",
+        "observation": "de unidade de tratamento em belo horizonte / mg para unidade de distribuição em são paulo / sp",
+        "trackedAt": "2018-01-10T00:08:00.000Z",
+        "unit": "belo horizonte / mg"
+      },
+      {
+        "status": "objeto saiu para entrega ao destinatário",
+        "observation": null,
+        "trackedAt": "2018-01-10T10:57:00.000Z",
+        "unit": "são paulo / sp"
+      }
+    ]  
+  },
+  "message": "success"
+}
 ```
-- GET /track/DUXX1595899BR/xml 200 OK
+
+
+**- GET /track/DUXX1595899BR/json 404 NOT_FOUND**
+
+
+```json
+{
+  "code": 404,
+  "data": "Objeto não encontrado no sistema dos Correios.",
+  "message": "not_found"
+}
 ```
+---
+
+**- GET /track/DUXX1595899BR/xml 200 OK**
+
 
 ```xml
 
@@ -86,9 +134,8 @@ GET /track/DUXX1595899BR/csv
 </object>
 ```
 
-```
-- GET /track/DUXX1595899BR/xml 404 NOT_FOUND
-```
+**- GET /track/DUXX1595899BR/xml 404 NOT_FOUND**
+
 
 ```xml
 <?xml version='1.0'?>
@@ -97,60 +144,7 @@ GET /track/DUXX1595899BR/csv
 ---
 
 
-```
-GET /track/DUXX1595899BR/json 200 OK
-```
-
-```json
-
-{
-  "code": 200,
-  "data": {
-    "isDelivered": false,
-    "postedAt": "2018-01-08T11:27:00.000Z",
-    "updatedAt": "2018-01-10T10:57:00.000Z",
-    "track": [
-      {
-        "status": "objeto postado",
-        "observation": null,
-        "trackedAt": "2018-01-08T11:27:00.000Z",
-        "unit": "belo horizonte / mg"
-      },
-      {
-        "status": "objeto encaminhado",
-        "observation": "de unidade de tratamento em belo horizonte / mg para unidade de distribuição em são paulo / sp",
-        "trackedAt": "2018-01-10T00:08:00.000Z",
-        "unit": "belo horizonte / mg"
-      },
-      {
-        "status": "objeto saiu para entrega ao destinatário",
-        "observation": null,
-        "trackedAt": "2018-01-10T10:57:00.000Z",
-        "unit": "são paulo / sp"
-      }
-    ]  
-  },
-  "message": "success"
-}
-```
-
-```
-GET /track/DUXX1595899BR/json 404 NOT_FOUND
-```
-
-```json
-{
-  "code": 404,
-  "data": "Objeto não encontrado no sistema dos Correios.",
-  "message": "not_found"
-}
-```
----
-
-
-```
-GET /track/DUXX1595899BR/csv 200 OK
-```
+**- GET /track/DUXX1595899BR/csv 200 OK**
 
 ```CSV
 "status","observation","trackedAt","unit"
@@ -159,10 +153,9 @@ GET /track/DUXX1595899BR/csv 200 OK
 "objeto saiu para entrega ao destinatário",,"2018-01-10T10:57:00.000Z","são paulo / sp"
 "objeto entregue ao destinatário",,"2018-01-10T13:57:00.000Z","são paulo / sp"
 ```
-       
-```
-GET /track/DUXX1595899BR/csv 404 NOT_FOUND
-```
+
+**- GET /track/DUXX1595899BR/csv 404 NOT_FOUND**
+
 ```
 ! EMPTY BUFFER
 ```
@@ -175,7 +168,7 @@ $ git clone https://github.com/talesluna/RastroJS/ && cd RastroJS
 $ npm install
 $ npm run dev (modo de desenvolvimento)
 $ # Configurar o ambiente e a api (dev, prod ou test) em config/env/*.env.js
-$ npm build (fazer build es6 com babel)
+$ npm build (fazer build com babel)
 $ npm start (iniciar com processo node simples)
 $ npm start:pm2 (iniciar a api com PM2 no host)
 $ npm start:docker (fazer pull e iniciar a api em container docker)
