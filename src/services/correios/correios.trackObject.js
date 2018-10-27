@@ -51,7 +51,7 @@ class CorreiosTrackObject extends CorreiosService {
                     {
                         status          : trackData[1][0].toLowerCase(),
                         observation     : trackData[1][1] ? trackData[1][1].toLowerCase() : null,
-                        trackedAt       : moment(trackData[0][0] + trackData[0][1], "DD/MM/YYYYHH:mm").toISOString(),
+                        trackedAt       : moment(trackData[0][0] + trackData[0][1], 'DD/MM/YYYYHH:mm').toISOString(),
                         unit            : trackData[0][2].toLowerCase()
                     }
                 )
@@ -65,7 +65,7 @@ class CorreiosTrackObject extends CorreiosService {
         tracks.reverse();
 
         // Detect first and last tracks
-        const firstTrack    = tracks[0];
+        const [firstTrack]  = tracks;
         const lastTrack     = tracks[tracks.length-1];
 
         // Retorna a lista de rastreios
@@ -87,7 +87,9 @@ class CorreiosTrackObject extends CorreiosService {
     track(objectCode) {
         return this._simpleRequest(this.ENDPOINTS.trackObject, 'POST', {objetos: objectCode})
             .then(html => {
+
                 return this.parser(html);
+
             })
             .then(objectTracking => {
                 // Not object found
@@ -97,6 +99,7 @@ class CorreiosTrackObject extends CorreiosService {
 
                 // Return found object
                 return objectTracking;
+
             })
             .catch(err => {
                 throw err;

@@ -7,5 +7,5 @@ import readObject from './read';
 export default (route) => {
 
     route.get('/track/:_objectCode/:_outputType', readValidate, readObject);
-    
+
 };

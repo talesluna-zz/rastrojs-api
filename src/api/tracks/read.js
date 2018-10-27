@@ -18,7 +18,8 @@ export default (req, res) => {
         const response = FormatResponse.format(track, req.params._outputType, 'object');
 
         res.set('content-type', response.type);
-        return res.status(res.api.codes.OK.code).send(response.data)
+
+        return res.status(res.api.codes.OK.code).send(response.data);
 
     })
     .catch(err => {
@@ -29,6 +30,8 @@ export default (req, res) => {
         const response = FormatResponse.format(err, req.params._outputType);
 
         res.set('content-type', response.type);
-        return res.status(res.api.codes.NOT_FOUND.code).send(response.data)
+
+        return res.status(res.api.codes.NOT_FOUND.code).send(response.data);
+
     });
 }

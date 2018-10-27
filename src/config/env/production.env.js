@@ -8,10 +8,10 @@ module.exports = {
     server: {
         secure: false,
         host: '0.0.0.0',
-        port: 8080,
+        port: process.env.NODE_PORT | 3000,
         cors: {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
             'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
         }
     },

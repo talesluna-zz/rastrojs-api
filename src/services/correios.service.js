@@ -1,5 +1,5 @@
 import Service from './service';
-import request from "request-promise";
+import request from 'request-promise';
 import iconv from 'iconv-lite';
 
 export default class CorreiosService extends Service {
@@ -11,7 +11,7 @@ export default class CorreiosService extends Service {
 
         // Configure endpoints
         this.ENDPOINTS = {
-            trackObject: 'http://www2.correios.com.br/sistemas/rastreamento/resultado_semcontent.cfm'
+            trackObject: 'https://www2.correios.com.br/sistemas/rastreamento/resultado_semcontent.cfm'
         };
 
     }
@@ -24,16 +24,21 @@ export default class CorreiosService extends Service {
      * @param {*} data
      */
     _simpleRequest(endpoint, method = 'GET', data = null) {
+
         return request(
-            {
-                uri      : endpoint,
-                form     : data,
-                method   : method,
-                encoding : null
-            }
-        ).then(html => {
-            return iconv.decode(Buffer.from(html), 'binary')
-        })
+                {
+                    uri         : endpoint,
+                    form        : data,
+                    gzip        : true,
+                    method      : method,
+                    encoding    : null,
+                    strictSSL   : false
+                }
+            )
+            .then(response => {
+
+                return iconv.decode(Buffer.from(response), 'binary')
+            });
     }
 
 }

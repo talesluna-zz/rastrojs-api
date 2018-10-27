@@ -1,40 +1,30 @@
 # RastroJS
 
-### API de Rastreamento de Objetos - Correios - NodeJS/Express
-### v2.5
+## API de Rastreamento de Objetos - Correios - NodeJS/Express *(v2.6)*
+Para rastreio de objetos nos correios sem uso de webservice.
 
-Para rastreio e objetos/encomendas nos correios sem uso de webservice.
+### Demo
+
+https://rastrojs.herokuapp.com/
 
 
-### Novidades:
-- Padronização lowercase.
-- Data de postagem e última atualização fora do "track".
-- Informação direta que determina se o objeto já foi entregue.
-- Datas em padrão ISO.
 
-### Tipos de retornos suportados:
-JSON, XML ou CSV
+### Retornos suportados:
+[![JSON](https://img.shields.io/badge/JSON-yellowgreen.svg?style=flat-square)](#)
+[![XML](https://img.shields.io/badge/XML-blue.svg?style=flat-square)](#)
+[![CSV](https://img.shields.io/badge/CSV-red.svg?style=flat-square)](#)
 
-### Rota básica:
+
+### Rota básica
 /track/:_objectCode/:_outputType
 
-### Exemplos:
-- http://you_host:port/track/DUXX1595899BR/json
-- http://you_host:port/track/DUXX1595899BR/xml
-- http://you_host:port/track/DUXX1595899BR/csv
-
-### Uso/Instalação:
-
-Em sua linha de comando execute:
-```sh
-$ git clone https://github.com/talesluna/RastroJS/ && cd RastroJS
-$ npm install
-$ npm run dev (modo de desenvolvimento)
-$ # Configurar o ambiente e a api (dev, prod ou test) em config/env/*.env.js
-$ npm build (fazer build es6 com babel)
-$ npm start (iniciar a api com PM2 no host)
-$ npm start-docker (fazer pull e iniciar a api em container docker)
+### Exemplos
+``` 
+GET /track/DUXX1595899BR/json
+GET /track/DUXX1595899BR/xml
+GET /track/DUXX1595899BR/csv
 ```
+
 
 ### Status e respostas:
 
@@ -56,13 +46,14 @@ $ npm start-docker (fazer pull e iniciar a api em container docker)
 |track.trackedAt|ISO String (Date)|json, xml e csv|Data e horário do rastreio
 |track.unit|ISO String (Date)|json, xml e csv|Unidade dos correios emissora do rastreio
 
-### Estrutura da resposta:
+### Formato de resposta
 
-#### XML
-
-*200 - OK*
+```
+- GET /track/DUXX1595899BR/xml 200 OK
+```
 
 ```xml
+
 <?xml version='1.0'?>
 <object>
     <isDelivered>true</isDelivered>
@@ -95,19 +86,23 @@ $ npm start-docker (fazer pull e iniciar a api em container docker)
 </object>
 ```
 
-*404 - NOT_FOUND*
+```
+- GET /track/DUXX1595899BR/xml 404 NOT_FOUND
+```
 
 ```xml
 <?xml version='1.0'?>
 <response>Error: Objeto não encontrado no sistema dos Correios.</response>
 ```
+---
 
 
-#### JSON
+```
+GET /track/DUXX1595899BR/json 200 OK
+```
 
-*200 - OK*
-    
 ```json
+
 {
   "code": 200,
   "data": {
@@ -139,7 +134,10 @@ $ npm start-docker (fazer pull e iniciar a api em container docker)
 }
 ```
 
-*404 - NOT_FOUND*
+```
+GET /track/DUXX1595899BR/json 404 NOT_FOUND
+```
+
 ```json
 {
   "code": 404,
@@ -147,10 +145,13 @@ $ npm start-docker (fazer pull e iniciar a api em container docker)
   "message": "not_found"
 }
 ```
+---
 
 
-#### CSV
-*200 - OK*
+```
+GET /track/DUXX1595899BR/csv 200 OK
+```
+
 ```CSV
 "status","observation","trackedAt","unit"
 "objeto postado",,"2018-01-08T11:27:00.000Z","belo horizonte / mg"
@@ -159,12 +160,29 @@ $ npm start-docker (fazer pull e iniciar a api em container docker)
 "objeto entregue ao destinatário",,"2018-01-10T13:57:00.000Z","são paulo / sp"
 ```
        
-*404 - NOT_FOUND*
-###### NO BUFFER
+```
+GET /track/DUXX1595899BR/csv 404 NOT_FOUND
+```
+```
+! EMPTY BUFFER
+```
 
-### Author
+
+### Instalação
+
+```sh
+$ git clone https://github.com/talesluna/RastroJS/ && cd RastroJS
+$ npm install
+$ npm run dev (modo de desenvolvimento)
+$ # Configurar o ambiente e a api (dev, prod ou test) em config/env/*.env.js
+$ npm build (fazer build es6 com babel)
+$ npm start (iniciar a api com PM2 no host)
+$ npm start-docker (fazer pull e iniciar a api em container docker)
+```
+
+
+
+#### Author: 
 Tales Luna - <tales.ferreira.luna@gmail.com>
-    
-### License:
-MIT
+#### License: *MIT*
 

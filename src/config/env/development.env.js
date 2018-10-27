@@ -5,8 +5,8 @@ module.exports = {
     },
     server: {
         secure: true,
-        host: '127.0.0.1',
-        port: 3000,
+        host: '0.0.0.0',
+        port: process.env.NODE_PORT | 3000,
         cors: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
