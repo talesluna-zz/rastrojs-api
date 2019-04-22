@@ -70,7 +70,7 @@ class CorreiosTrackObject extends CorreiosService {
 
         // Retorna a lista de rastreios
         return {
-            isDelivered : lastTrack.status.includes('objeto entregue'),
+            isDelivered : lastTrack.status.includes('Objeto entregue ao destinatário'),
             postedAt    : firstTrack.trackedAt,
             updatedAt   : lastTrack.trackedAt,
             track       : tracks
