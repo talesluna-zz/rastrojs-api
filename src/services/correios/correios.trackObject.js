@@ -49,9 +49,9 @@ class CorreiosTrackObject extends CorreiosService {
                 // Armazena os dados finais do rastreito na lista
                 tracks.push(
                     {
-                        status          : trackData[1][0].toLowerCase(),
+                        status          : trackData[1][0] + ' ' + (trackData[1][1] ? trackData[1][1] : '')+ ' ' + (trackData[1][2] ? trackData[1][2] : ''),
                         observation     : trackData[1][1] ? trackData[1][1].toLowerCase() : null,
-                        trackedAt       : moment(trackData[0][0] + trackData[0][1], 'DD/MM/YYYYHH:mm').toISOString(),
+                        trackedAt       : trackData[0][0].toLowerCase() + ' ' + trackData[0][1].toLowerCase(),
                         unit            : trackData[0][2].toLowerCase()
                     }
                 )
