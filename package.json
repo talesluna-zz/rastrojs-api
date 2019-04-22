@@ -1,5 +1,8 @@
 {
   "name": "rastrojs",
+  "engines": {
+    "node": "10.15.3"
+  },
   "version": "2.6.0",
   "description": "Rastro - API Rastreamento de objetos - Correios NodeJS/Express",
   "main": "src/app.js",
