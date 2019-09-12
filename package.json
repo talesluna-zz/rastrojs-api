@@ -1,55 +1,32 @@
 {
-  "name": "rastrojs",
-  "engines": {
-    "node": "8.11.3",
-    "npm": "6.4.0"
-  },
-  "version": "2.6.0",
-  "description": "Rastro - API Rastreamento de objetos - Correios NodeJS/Express",
-  "main": "src/app.js",
-  "scripts": {
-    "dev": "export NODE_ENV='development' && nodemon --exec babel-node src/app.js --use_strict",
-    "test": "export NODE_ENV='test' && mocha --timeout 10000 src/tests/ --compilers js:babel-core/register --recursive",
-    "build": "export NODE_ENV='production' && npm run clean && babel src --ignore test.js --out-dir ./dist --copy-files",
-    "clean": "rm -rf dist && mkdir dist",
-    "start": "export NODE_ENV='production' && node dist/app.js",
-    "stop:pm2": "pm2 stop pm2-deploy.yml",
-    "reatrt:pm2": "pm2 restart pm2-deploy.yml",
-    "start:docker": "sudo docker-compose up -d ; sudo docker ps",
-    "stop:docker": "sudo docker-compose stop"
-  },
-  "author": "Tales Luna <tales.ferreira.luna@gmail.com>",
+  "name": "rastrojs-api",
+  "version": "3.0.0",
+  "description": "API de rastreamento de objetos nos Correios.",
+  "main": "src/app.ts",
   "license": "MIT",
-  "devDependencies": {
-    "assert": "^1.4.1",
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-minify": "^0.3.0",
-    "chai": "^4.1.2",
-    "chai-http": "^4.0.0",
-    "eslint": "^4.0.0-rc.0",
-    "mocha": "^5.2.0",
-    "nodemon": "^1.11.0"
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/talesluna/rastrojs-api"
   },
   "dependencies": {
-    "body-parser": "^1.17.2",
-    "cheerio": "^1.0.0-rc.2",
-    "compression": "^1.7.0",
-    "encoding": "^0.1.12",
-    "express": "^4.15.3",
-    "helmet": "^3.8.1",
-    "iconv-lite": "^0.4.19",
-    "joi": "^10.5.2",
-    "js2xmlparser": "^3.0.0",
-    "json2csv": "^3.11.5",
-    "moment": "^2.22.2",
-    "mongoose": "^5.1.2",
-    "morgan": "^1.8.2",
-    "mysql2": "^1.4.2",
-    "pg": "^6.1.0",
-    "pg-hstore": "^2.3.2",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.2",
-    "sequelize": "^4.3.2"
+    "@agio/framework": "^1.1.1",
+    "joi": "^14.3.1",
+    "lodash": "^4.17.11",
+    "mysql2": "^1.6.5",
+    "nodemon": "^1.19.0",
+    "rastrojs": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/joi": "^14.3.3",
+    "@types/lodash": "^4.14.129",
+    "@types/node": "^12.0.1",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
+  "scripts": {
+    "start": "node dist/app.js",
+    "dev": "nodemon src/app.ts",
+    "build": "rm -rf dist && tsc"
   }
 }

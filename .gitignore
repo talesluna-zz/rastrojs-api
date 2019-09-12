@@ -1,10 +1,6 @@
+node_modules
+.vscode
 .idea
-.conf
-.config
-.log
-package-lock.json
 dist
-releases
-node_modules/
-storage/logs
-push-heroku.sh
+.DS_Store
+package-lock.json

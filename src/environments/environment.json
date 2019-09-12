@@ -1,0 +1,30 @@
+{
+    "production": true,
+
+    "server": {
+        "host": "0.0.0.0",
+        "port": 8889,
+        "ssl": {
+            "enable": false,
+            "key": "PRIVATE_KEY_PATH",
+            "cert": "CERTIFICATE_PATH"
+        },
+        "cors": {
+            "origin": "*",
+            "headers": "Accept, Authorization",
+            "methods": "GET, PUT, POST, DELETE, OPTIONS"
+        },
+        "custom-headers": {
+            "x-powered-by": "Agio Framework"
+        }
+    },
+
+    "databases": {
+
+    },
+    
+    "my-others-confs": {
+
+    }
+
+}
