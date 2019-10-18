@@ -15,7 +15,7 @@
     "lodash": "^4.17.11",
     "mysql2": "^1.6.5",
     "nodemon": "^1.19.0",
-    "rastrojs": "^1.0.3"
+    "rastrojs": "^1.1.0"
   },
   "devDependencies": {
     "@types/joi": "^14.3.3",
